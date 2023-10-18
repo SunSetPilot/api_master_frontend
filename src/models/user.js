@@ -10,6 +10,7 @@ export default {
   namespace: 'user',
 
   state: {
+    isLoggedIn: false,
     user: {},
     userList: {},
   },
@@ -38,14 +39,19 @@ export default {
       });
       return response;
     },
-    *createUser(_, { call, put }) {
-      const response = yield call(register);
+    *createUser({ payload }, { call, put }) {
+      const response = yield call(register, payload);
+      return response;
+    },
+    *loginUser({ payload }, { call, put }) {
+      const response = yield call(login, payload);
       return response;
     },
     *login(_, { call, put }) {
-      const response = yield call(login);
-      return response;
-    },
+      yield put({
+        type: 'login'
+      });
+    }
   },
 
   reducers: {
@@ -58,6 +64,20 @@ export default {
         user: action.payload.data,
       };
     },
+    login(state, action) {
+      return {
+        ...state,
+        isLoggedIn: true,
+        ...action.payload
+      };
+    },
+    logout(state, action) {
+      return {
+        ...state,
+        isLoggedIn: false,
+        ...action.payload
+      };
+    }
   },
 
 };

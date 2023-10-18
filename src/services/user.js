@@ -3,9 +3,9 @@ import request from '../utils/request';
 
 // user login
 export function login(params) {
-  return request('/user', {
+  return request('/user/login', {
     method: 'POST',
-    body: params
+    body: params,
   })
 }
 
@@ -16,7 +16,7 @@ export function queryUserInfo(params) {
 
 // register
 export function register(params) {
-  return request('/user', {
+  return request('/user/register', {
     method: 'POST',
     body: params
   })
