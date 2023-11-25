@@ -23,7 +23,7 @@ function LoginPage(props) {
     if(res.status === 200) {
       message.success('Login successfully!');
       props.history.push({
-        pathname: '/example',
+        pathname: '/projects',
       });
     } else {
       message.error(res && res.message);

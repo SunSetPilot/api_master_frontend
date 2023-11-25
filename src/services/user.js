@@ -3,7 +3,7 @@ import request from '../utils/request';
 
 // user login
 export function login(params) {
-  return request('/user/login', {
+  return request('/api/user/login', {
     method: 'POST',
     body: params,
   })
@@ -11,12 +11,12 @@ export function login(params) {
 
 // get user info
 export function queryUserInfo(params) {
-  return request(`/user/${params.id}`);
+  return request(`/api/user/${params.id}`);
 }
 
 // register
 export function register(params) {
-  return request('/user/register', {
+  return request('/api/user/register', {
     method: 'POST',
     body: params
   })
@@ -24,5 +24,5 @@ export function register(params) {
 
 // get user list
 export function queryUsers(params) {
-  return request(`/users`);
+  return request(`/api/users`);
 }

@@ -37,14 +37,53 @@
   }
 }
 
+.cardContainer{
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .projectCard {
   width: 300px;
+  height: 150px;
   display: inline-block;
-  flex: 1;
-  margin:20px 60px;
+  margin: 50px;
 
   .apiText {
     float: right;
+    font-size: 18px;
+    font-weight: bold;
     margin-left: 20px;
   }
+
+  .editTab {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  .deleteTab {
+    display: inline-block;
+    color: red;
+  }
+}
+
+.createProjectCard {
+  width: 300px;
+  height: 150px;
+  display: inline-block;
+  margin: 50px;
+  border: 1px dashed #B1B1B1;
+  .plus {
+    display: block;
+    font-size: 24px;
+    margin: 20px;
+  }
+  .createSpan {
+    font-size: 18px;
+    display: block;
+    text-align: center;
+  }
+}
+.createProjectCard:hover {
+  border: 1px dashed #40A9FF;
+  color: #40A9FF;
+  cursor: pointer;
 }

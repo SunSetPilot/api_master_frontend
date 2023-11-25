@@ -1,6 +1,8 @@
 import {
   queryProjectList,
-  queryProjectDetail
+  queryProjectDetail,
+  createProject,
+  updateProject,
 } from '../services/project';
 
 export default {
@@ -21,7 +23,15 @@ export default {
       return response;
     },
     *fetchProjectDetail({ payload }, { call, put }) {
-      const response = yield call(queryProjectDetail);
+      const response = yield call(queryProjectDetail, payload);
+      return response;
+    },
+    *createProject({ payload }, { call, put }) {
+      const response = yield call(createProject, payload);
+      return response;
+    },
+    *updateProject({ payload }, { call, put }) {
+      const response = yield call(updateProject, payload);
       return response;
     },
   },

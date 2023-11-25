@@ -26,7 +26,7 @@ export const getRouterData = (app) => {
     '/register': {
       component: dynamicWrapper(app, ['user'], () => import('../routes/RegisterPage')),
     },
-    '/example': {
+    '/project/:id': {
       component: dynamicWrapper(app, ['user'], () => import('../routes/IndexPage')),
     },
     '/projects': {
