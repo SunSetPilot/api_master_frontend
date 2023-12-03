@@ -7,6 +7,10 @@
     color: white;
     text-align: center;
   }
+  .createNewAccount {
+    display: block;
+    text-align: center;
+  }
 }
 .title {
   font-size:  44px;
@@ -40,6 +44,9 @@
 .cardContainer{
   display: flex;
   flex-wrap: wrap;
+  .ant-card:hover {
+    cursor: pointer;
+  }
 }
 
 .projectCard {
@@ -86,4 +93,54 @@
   border: 1px dashed #40A9FF;
   color: #40A9FF;
   cursor: pointer;
+}
+
+.apiContainer {
+  display: flex;
+
+  .sideContainer {
+    width: 360px;
+    background-color: white;
+    float: left;
+    margin-left: -25px;
+    height: 100vh;
+    overflow-y: auto;
+    .projectContainer {
+      text-align: center;
+      height: 100px;
+      h1 {
+        margin: 20px;
+      }
+      .importTab {
+        display: inline-block;
+        margin-left: 20px;
+      }
+    }
+    :global {
+      .ant-list-item-meta {
+        margin-left: 20px;
+      }
+    }
+  }
+  .detailContainer {
+    width: calc(100% - 360px);
+    flex: 3;
+    .editTab {
+      display: inline-block;
+      margin-left: 20px;
+    }
+    .deleteTab {
+      display: inline-block;
+      color: red;
+    }
+    .empty {
+      margin-top: 40vh;
+    }
+    :global {
+      .ant-card {
+        margin: 20px;
+        border-radius: 20px;
+      }
+    }
+  }
 }

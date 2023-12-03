@@ -30,7 +30,10 @@ export const getRouterData = (app) => {
       component: dynamicWrapper(app, ['user'], () => import('../routes/IndexPage')),
     },
     '/projects': {
-      component: dynamicWrapper(app, ['project'], () => import('../routes/ProjectList')),
+      component: dynamicWrapper(app, ['project', 'user'], () => import('../routes/ProjectList')),
+    },
+    '/project/:id/api': {
+      component: dynamicWrapper(app, ['user', 'project', 'api'], () => import('../routes/ApiPage')),
     },
   };
 }

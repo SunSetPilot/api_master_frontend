@@ -2,13 +2,12 @@ import { useEffect, useState } from 'react';
 import { connect } from 'dva';
 import {
   Card,
-  Button,
+  Popconfirm,
   message
 } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import ProjectModal from '../common/Project/ProjectModal';
+import ProjectModal from '../components/Project/ProjectModal';
 import styles from './index.less';
-import project from '../models/project';
 
 const modalDict = {
   'create': {
@@ -24,12 +23,14 @@ const modalDict = {
 function ProjectList(props) {
   useEffect(() => {
     getProjectList();
+    getAllUsers();
   }, [])
   console.log('modalType1', modalType);
 
   const [projectList, setProjectList] = useState([]);
   const [projectId, setProjectId] = useState(null);
   const [projectDetail, setProjectDetail] = useState({});
+  const [memberList, setMemberList] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState('create'); // The type of the showing Modal(Create/Edit)
 
@@ -44,10 +45,12 @@ function ProjectList(props) {
 
   function onProjectCardClick(e, p) {
     e.preventDefault();
-    props.history.push(`/project/${p.project_id}`)
+    props.history.push(`/project/${p.project_id}/api`)
   }
 
-  function onEditClick(p) {
+  function onEditClick(e, p) {
+    e.preventDefault();
+    e.stopPropagation()
     getProjectDetail(p.project_id);
   }
 
@@ -66,8 +69,16 @@ function ProjectList(props) {
     }
   }
 
+  async function getAllUsers() {
+    let res = await props.dispatch({
+      type: 'user/fetchUserList',
+    });
+    if (res && res.status === 200) {
+      setMemberList(res.data);
+    }
+  }
+
   async function onModalOk(payload) {
-    console.log(projectId, payload);
     let res = await props.dispatch({
       type:modalDict[modalType].dispatch,
       payload: {
@@ -92,6 +103,27 @@ function ProjectList(props) {
     setModalOpen(false);
   }
 
+  function onDeleteClick(e) {
+    e.preventDefault();
+    e.stopPropagation()
+  }
+
+  async function onDeleteOK(e, p){
+    e.preventDefault();
+    e.stopPropagation()
+    let res = await props.dispatch({
+      type: 'project/deleteProject',
+      payload: {
+        id: p.project_id,
+      }
+    });
+    if (res && res.status === 200) {
+      message.success("Delete Project successfully!")
+      getProjectList();
+    }
+  }
+  const deleteText = 'Are you sure you want to delete ';
+
   return (
     <div className={styles.cardContainer}>
       {
@@ -99,16 +131,18 @@ function ProjectList(props) {
           <Card
             title={p.project_name}
             className={styles.projectCard} key={p.project_id}
-            // onClick={(e) => onProjectCardClick(e, p)}
+            onClick={(e) => onProjectCardClick(e, p)}
             extra={
               <div>
-                <a className={styles.editTab} onClick={() => onEditClick(p)}><EditOutlined />Edit</a>
-                <a className={styles.deleteTab}><DeleteOutlined />Delete</a>
+                <a className={styles.editTab} onClick={(e) => onEditClick(e, p)}><EditOutlined />Edit</a>
+                <Popconfirm placement="topLeft" title={deleteText + p.project_name + '?'} onClick={(e) => onDeleteClick(e)} onConfirm={(e) => onDeleteOK(e, p)} okText="Yes" cancelText="No">
+                  <a className={styles.deleteTab}><DeleteOutlined />Delete</a>
+                </Popconfirm>
               </div>
             }
           >
             {/* <h2>{p.project_name}</h2> */}
-            <span className={styles.apiText}>{p.project_api}</span>
+            <span className={styles.apiText}>{p.api_count}</span>
             {p.project_owner}
           </Card>
         )
@@ -123,6 +157,7 @@ function ProjectList(props) {
       <ProjectModal
         type={modalType}
         projectDetail={projectDetail}
+        memberList={memberList}
         isModalOpen={isModalOpen}
         onCancel={onModalCancel}
         onOk={onModalOk}
@@ -131,4 +166,4 @@ function ProjectList(props) {
   );
 }
 
-export default connect(({ project }) => ({ project }))(ProjectList);
+export default connect(({ user, project }) => ({ user, project }))(ProjectList);

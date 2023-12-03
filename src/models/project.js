@@ -3,6 +3,8 @@ import {
   queryProjectDetail,
   createProject,
   updateProject,
+  queryProjectMembers,
+  deleteProject,
 } from '../services/project';
 
 export default {
@@ -32,6 +34,14 @@ export default {
     },
     *updateProject({ payload }, { call, put }) {
       const response = yield call(updateProject, payload);
+      return response;
+    },
+    *deleteProject({ payload }, { call, put }) {
+      const response = yield call(deleteProject, payload);
+      return response;
+    },
+    *fetchProjectMembers({ payload }, { call, put }) {
+      const response = yield call(queryProjectMembers, payload);
       return response;
     },
   },

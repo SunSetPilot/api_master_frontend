@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import Cookies from 'js-cookie';
-import { Redirect, Route, Switch } from 'dva/router';
+import { Redirect, Switch } from 'dva/router';
 import CommonLayout from './CommonLayout';
 import InitLayout from './InitLayout';
 

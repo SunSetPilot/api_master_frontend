@@ -45,7 +45,7 @@ function LoginPage(props) {
         <Card className={styles.loginCard}>
           <Form
             name="basic"
-            labelCol={{ span: 8 }}
+            labelCol={{ span: 6 }}
             wrapperCol={{ span: 16 }}
             initialValues={{ remember: true }}
             onFinish={onFinish}
@@ -65,18 +65,18 @@ function LoginPage(props) {
               <Input.Password />
             </Form.Item>
 
-            <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8 }}>
+            <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 6 }}>
               <Checkbox>Remember me</Checkbox>
             </Form.Item>
-            <a className={styles.forgotPwd}>Forgot password?</a>
+            {/* <a className={styles.forgotPwd}>Forgot password?</a> */}
 
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
               <Button type="primary" htmlType="submit">
                 Sign in
               </Button>
             </Form.Item>
+            <a className={styles.createNewAccount} onClick={() => props.history.push('/register')}>Not a member? Create a new account</a>
           </Form>
-          <a className={styles.createNewAccount} onClick={() => props.history.push('/register')}>Not a member? Create a new account</a>
         </Card>
       </div>
     </React.Fragment>

@@ -3,26 +3,34 @@ import request from '../utils/request';
 
 // user login
 export function login(params) {
-  return request('/api/user/login', {
+  return request('/api/v1/user/login', {
     method: 'POST',
-    body: params,
+    body: {
+      ...params,
+    },
   })
 }
 
 // get user info
 export function queryUserInfo(params) {
-  return request(`/api/user/${params.id}`);
+  return request(`/api/v1/user/${params.id}`);
 }
 
 // register
 export function register(params) {
-  return request('/api/user/register', {
+  return request('/api/v1/user/register', {
     method: 'POST',
-    body: params
+    body: {
+      ...params,
+    },
   })
+}
+
+export function logout(params) {
+  return request('/api/v1/user/logout')
 }
 
 // get user list
 export function queryUsers(params) {
-  return request(`/api/users`);
+  return request(`/api/v1/user/all`);
 }

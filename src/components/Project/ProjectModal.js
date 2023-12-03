@@ -10,13 +10,17 @@ import {
 const { Option } = Select;
 
 function ProjectModal(props) {
-  const { type, projectDetail } = props;
+  const { type, projectDetail, memberList } = props;
+  const [userOptionList, setUserOptionList] = useState([]);
   const modalDict = {
     'create': {
       title: 'Create Project',
     },
     'edit': {
       title: 'Edit Project',
+    },
+    'import': {
+      title: 'Batch Import',
     }
   };
 
@@ -25,20 +29,24 @@ function ProjectModal(props) {
 
   useEffect(() =>  {
     setTimeout(() => {
-      console.log('projectDetail', projectDetail);
       form.setFieldsValue(projectDetail);
+      setAutoImport(props.projectDetail.auto_import_api)
     })
   }, [props.projectDetail])
+
+  useEffect(() =>  {
+    setUserOptionList(props.memberList)
+  }, [props.memberList])
 
   useEffect(() => {
     setTimeout(() => {
       if (type == 'create') {
         form.setFieldsValue({
-          name: '',
-          member: [],
-          auto_import_api: true,
-          git_repo: '',
-          branch: ''
+          project_name: '',
+          members: [],
+          auto_import_api: false,
+          git_address: '',
+          git_branch: ''
         });
       }
     })
@@ -56,6 +64,12 @@ function ProjectModal(props) {
     setAutoImport(value);
   }
 
+  function getUserOptions() {
+    return userOptionList && userOptionList.map(m => {
+      return { 'label': m.user_name, 'value': m.user_id}
+    });
+  }
+
   return (
     <Modal
       title={modalDict[type].title}
@@ -64,30 +78,28 @@ function ProjectModal(props) {
       onCancel={handleCancel}
       // destroyOnClose={true}
     >
-      <Form form={form} initialValues={{projectDetail}}>
-        <Form.Item label="Name" name="name"
+      <Form name="basic" form={form} initialValues={{projectDetail}}>
+        <Form.Item label="Name" name="project_name"
           rules={[{ required: true, message: 'Please input your Email!' }]}
         >
-          <Input />
+          <Input disabled={type === 'import'}/>
         </Form.Item>
 
-        <Form.Item label="Member" name="member">
-          <Select placeholder="Please select your project member." >
-            <Option value="1">123</Option>
-          </Select>
+        <Form.Item label="Member" name="members">
+          <Select mode="multiple" placeholder="Please select your project members." disabled={type === 'import'} options={getUserOptions()}/>
         </Form.Item>
-        <Form.Item label="Auto import API" name="auto_import_api">
-          <Switch checked={autoImport} onChange={onSwitchChange}/>
+        <Form.Item label="Auto import API" name="auto_import_api" valuePropName="checked">
+          <Switch onChange={onSwitchChange}/>
         </Form.Item>
         {
           autoImport && (
             <React.Fragment>
-              <Form.Item label="Git repository" name="git_repo"
+              <Form.Item label="Git repository" name="git_address"
               >
                 <Input placeholder="Please input your project git repository address!" />
               </Form.Item>
 
-              <Form.Item label="Branch" name="branch"
+              <Form.Item label="Branch" name="git_branch"
                 rules={[{ required: true, message: 'Please input the branch!' }]}
               >
                 <Input placeholder="Please input the branch!" />
